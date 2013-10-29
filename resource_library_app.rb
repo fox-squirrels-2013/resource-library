@@ -1,7 +1,17 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 
-set :database, 'sqlite3:///db/resource_library.sqlite3'
+
+# use the dotenv gem and .env file to store sensitive and changing data
+# This could go in an initialzer 
+begin
+  require 'dotenv'
+  Dotenv.load(".env.#{ENV['RACK_ENV']}", ".env")
+rescue LoadError
+end
+
+set :database, ENV['DATABASE_URL']
+
 
 class Topic < ActiveRecord::Base
 
